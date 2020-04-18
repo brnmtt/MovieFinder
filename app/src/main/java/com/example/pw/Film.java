@@ -1,6 +1,7 @@
 package com.example.pw;
 
 public class Film {
+
     private int idFilm;
     private String title;
     private String description;
@@ -9,8 +10,7 @@ public class Film {
 
 
 
-    public Film() {
-    }
+    public Film() {}
 
 
 

@@ -12,6 +12,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.pw.Film;
 import com.example.pw.R;
 import com.example.pw.ui.RecyclerViewAdapter;
+import com.example.pw.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
@@ -33,14 +34,17 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Film> films;
     public static ArrayList<Film> toSeeFilm;
     public static final String imagePrefix = "https://image.tmdb.org/t/p/w500";
+    HomeFragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
+        fragment = new HomeFragment();
+
         films = new ArrayList<>();
-        getData();
+
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard)
                 .build();
@@ -50,46 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void getData(){
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://api.themoviedb.org/3/movie/upcoming?api_key=44a49a187a15a8457aeb3e8b876092f8&language=it-IT&page=1";
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                 new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
 
 
-                        try {
-
-                            JSONObject obj = new JSONObject(response);
-                            JSONArray result = obj.getJSONArray("results");
-
-                            for(int i = 0 ; i < result.length() ; i++){
-
-                                JSONObject data = result.getJSONObject(i);
-                                Film film = new Film();
-                                film.setTitle(data.getString("original_title"));
-                                film.setDescription(data.getString("overview"));
-                                film.setImagePath(data.getString("poster_path"));
-                                film.setBackDropPath(data.getString("backdrop_path"));
-                                MainActivity.films.add(film);
-                                Log.d("FILM", film.toString());
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("FILM", error.toString());
-            }
-        });
-
-// Add the request to the RequestQueue.
-        queue.add(stringRequest);
-    }
 }

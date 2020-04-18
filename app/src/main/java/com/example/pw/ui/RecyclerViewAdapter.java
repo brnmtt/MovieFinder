@@ -38,8 +38,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         String url = MainActivity.imagePrefix+MainActivity.films.get(position).getImagePath();
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, FilmDescriptionActivity.class);
+                intent.putExtra("position", position);
+
+                context.startActivity(intent);
+            }
+        });
 
         Glide.with(context)
                 .load(url)
@@ -61,15 +71,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             icon = itemView.findViewById(R.id.icon);
 
             this.context = context;
-
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, FilmDescriptionActivity.class);
-                    context.startActivity(intent);
-                }
-            });
         }
 
     }
