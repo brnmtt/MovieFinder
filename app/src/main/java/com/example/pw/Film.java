@@ -7,12 +7,20 @@ public class Film {
     private String description;
     private String imagePath;
     private String backDropPath;
+    private String toSee;
 
 
 
     public Film() {}
 
 
+    public String getToSee() {
+        return toSee;
+    }
+
+    public void setToSee(String toSee) {
+        this.toSee = toSee;
+    }
 
     public String getBackDropPath() {
         return backDropPath;

@@ -1,6 +1,9 @@
 package com.example.pw.ui.home;
 
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 
@@ -20,18 +23,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.pw.EndlessScrollListener;
 import com.example.pw.R;
 
+import com.example.pw.Utilities;
 import com.example.pw.database.FilmProvider;
+import com.example.pw.database.FilmTableHelper;
 import com.example.pw.ui.adapter.RecyclerViewAdapter;
+import com.example.pw.ui.dialogFragment.ConfirmDialogFragmentListener;
 
 
-
-
-public class HomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class HomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, ConfirmDialogFragmentListener{
     private RecyclerView list;
     private RecyclerViewAdapter adapter;
-
+    private final String dialogMessage = "Vuoi aggiungere questo film alla lista di quelli da vedere?";
 
 
 
@@ -42,9 +47,23 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
 
 
         list = root.findViewById(R.id.list);
-        list.setLayoutManager(new GridLayoutManager(getActivity(),2));
-        getActivity().getSupportLoaderManager().initLoader(1, null, this);
+        GridLayoutManager manager;
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            manager = new GridLayoutManager(getActivity(),3);
+        }else{
+            manager = new GridLayoutManager(getActivity(),2);
+        }
 
+        list.setLayoutManager(manager);
+
+        getActivity().getSupportLoaderManager().initLoader(1, null, this);
+        EndlessScrollListener listener = new EndlessScrollListener(manager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Utilities.getData(getContext());
+            }
+        };
+        list.addOnScrollListener(listener);
 
         return root;
     }
@@ -58,13 +77,32 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        adapter = new RecyclerViewAdapter(getContext(),data);
-        list.setAdapter(adapter);
+
+        if(list.getAdapter()==null){
+            adapter = new RecyclerViewAdapter(getContext(),data, this, dialogMessage);
+            list.setAdapter(adapter);
+        }else{
+            adapter.setCursor(data);
+        }
+
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+
+    }
+
+
+    @Override
+    public void onPositivePressed(long id) {
+        ContentValues cv = new ContentValues();
+        cv.put(FilmTableHelper.TO_SEE, "true");
+        getContext().getContentResolver().update(FilmProvider.FILMS,cv,FilmTableHelper._ID + " = "+ id,null);
+    }
+
+    @Override
+    public void onNegativePressed() {
 
     }
 }

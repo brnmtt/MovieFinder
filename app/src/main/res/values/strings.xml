@@ -2,4 +2,5 @@
     <string name="app_name">PW</string>
     <string name="title_home">Lista film</string>
     <string name="title_to_see">Film da vedere</string>
+    <string name="no_description">Nessuna descrizione disponibile</string>
 </resources>

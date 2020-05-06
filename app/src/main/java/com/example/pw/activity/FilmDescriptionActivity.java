@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.pw.Film;
 import com.example.pw.R;
+import com.example.pw.Utilities;
 import com.example.pw.database.FilmProvider;
 import com.example.pw.database.FilmTableHelper;
 
@@ -36,10 +37,21 @@ public class FilmDescriptionActivity extends AppCompatActivity {
         cursor.moveToNext();
 
         titolo.setText(cursor.getString(cursor.getColumnIndex(FilmTableHelper.TITLE)));
-        descrizione.setText(cursor.getString(cursor.getColumnIndex(FilmTableHelper.DESCRIPTION)));
-        String url = MainActivity.imagePrefix + cursor.getString(cursor.getColumnIndex(FilmTableHelper.BACKDROPPATH));
-        Glide.with(this)
-                .load(url)
-                .into(banner);
+
+        if(!cursor.getString(cursor.getColumnIndex(FilmTableHelper.BACKDROPPATH)).equals("null")){
+            String url = Utilities.imagePrefix+cursor.getString(cursor.getColumnIndex(FilmTableHelper.BACKDROPPATH));
+            Glide.with(this)
+                    .load(url)
+                    .into(banner);
+        }else{
+            Glide.with(this)
+                    .load(R.drawable.image_missing)
+                    .into(banner);
+        }
+        if(!cursor.getString(cursor.getColumnIndex(FilmTableHelper.DESCRIPTION)).equals("")){
+            descrizione.setText(cursor.getString(cursor.getColumnIndex(FilmTableHelper.DESCRIPTION)));
+        }else{
+            descrizione.setText(R.string.no_description);
+        }
     }
 }
