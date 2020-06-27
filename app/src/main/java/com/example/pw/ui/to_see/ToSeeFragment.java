@@ -45,13 +45,7 @@ public class ToSeeFragment extends Fragment implements LoaderManager.LoaderCallb
         }
         list.setLayoutManager(manager);
         getActivity().getSupportLoaderManager().initLoader(2, null, this);
-        EndlessScrollListener listener = new EndlessScrollListener(manager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                Utilities.getData(getContext());
-            }
-        };
-        list.addOnScrollListener(listener);
+
 
         return root;
     }
