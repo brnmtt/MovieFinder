@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pw.EndlessScrollListener;
 import com.example.pw.R;
 import com.example.pw.Utilities;
+import com.example.pw.activity.MainActivity;
 import com.example.pw.database.FilmProvider;
 import com.example.pw.database.FilmTableHelper;
 import com.example.pw.ui.adapter.RecyclerViewAdapter;
@@ -34,6 +35,8 @@ public class ToSeeFragment extends Fragment implements LoaderManager.LoaderCallb
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        MainActivity.seen.setVisibility(View.GONE);
+        MainActivity.unseen.setVisibility(View.GONE);
         View root = inflater.inflate(R.layout.fragment_to_see, container, false);
 
         list = root.findViewById(R.id.list);

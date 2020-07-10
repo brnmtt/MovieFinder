@@ -2,6 +2,9 @@ package com.example.pw.activity;
 
 ;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 
 
 import com.example.pw.R;
@@ -21,7 +24,7 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    public static ImageButton seen,unseen;
     HomeFragment fragment;
     Toolbar toolbar;
     @Override
@@ -33,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         Utilities.getData(this);
         fragment = new HomeFragment();
+
+        seen = findViewById(R.id.seenFilter);
+        unseen = findViewById(R.id.unseenFilter);
+
+;
 
 
 

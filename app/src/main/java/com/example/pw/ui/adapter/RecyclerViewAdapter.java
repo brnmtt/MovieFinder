@@ -1,5 +1,6 @@
 package com.example.pw.ui.adapter;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -7,6 +8,7 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -15,6 +17,7 @@ import com.example.pw.Utilities;
 import com.example.pw.activity.FilmDescriptionActivity;
 import com.example.pw.R;
 import com.example.pw.activity.MainActivity;
+import com.example.pw.database.FilmProvider;
 import com.example.pw.database.FilmTableHelper;
 import com.example.pw.ui.dialogFragment.ConfirmDialogFragmentListener;
 import com.example.pw.ui.dialogFragment.CustomDialogFragment;
@@ -54,10 +57,42 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         if(!film.moveToPosition(position)){
             return;
         }
+        final String seen = film.getString(film.getColumnIndex(FilmTableHelper.SEEN));
+        final long id = film.getLong(film.getColumnIndex(FilmTableHelper._ID));
+        if(seen.equals("false")){
+            Glide.with(context)
+                    .load(R.drawable.not_seen)
+                    .into(holder.seen);
+        }else{
+            Glide.with(context)
+                    .load(R.drawable.seen)
+                    .into(holder.seen);
+        }
+
+        holder.seen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ContentValues cv = new ContentValues();
+                if(seen.equals("false")){
+                    Glide.with(context)
+                            .load(R.drawable.seen)
+                            .into(holder.seen);
+
+                    cv.put(FilmTableHelper.SEEN,"true");
+
+                }else{
+                    Glide.with(context)
+                            .load(R.drawable.not_seen)
+                            .into(holder.seen);
+                    cv.put(FilmTableHelper.SEEN,"false");
+                }
+                context.getContentResolver().update(FilmProvider.FILMS,cv,FilmTableHelper._ID + " = "+ id,null);
+            }
+        });
 
         if(!film.getString(film.getColumnIndex(FilmTableHelper.IMAGEPATH)).equals("null")){
             String url = Utilities.imagePrefix+film.getString(film.getColumnIndex(FilmTableHelper.IMAGEPATH));
@@ -70,7 +105,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     .into(holder.image);
         }
 
-        final long id = film.getLong(film.getColumnIndex(FilmTableHelper._ID));
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,10 +143,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView image;
+        ImageButton seen;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.icon);
+            seen = itemView.findViewById(R.id.seenImageButton);
         }
     }
 }

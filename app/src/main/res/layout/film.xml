@@ -19,4 +19,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@android:drawable/ic_menu_report_image"
         />
+
+    <ImageButton
+        android:id="@+id/seenImageButton"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="32dp"
+        android:background="#57000000"
+        android:scaleType="fitCenter"
+        android:tint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/not_seen" />
 </androidx.constraintlayout.widget.ConstraintLayout>

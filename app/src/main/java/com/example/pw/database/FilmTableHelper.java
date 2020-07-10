@@ -12,6 +12,7 @@ public class FilmTableHelper implements BaseColumns {
         public static final String BACKDROPPATH = "backdrop_path";
         public static final String API_ID = "api_id";
         public static final String TO_SEE = "to_see";
+        public static final String SEEN = "seen";
 
         public static final String CREATE = "CREATE TABLE " + TABLE_NAME +
                 "(" + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT , "+
@@ -20,6 +21,7 @@ public class FilmTableHelper implements BaseColumns {
                 IMAGEPATH + " TEXT , " +
                 BACKDROPPATH + " TEXT , " +
                 TO_SEE + " TEXT , " +
+                SEEN + " TEXT , " +
                 API_ID +" TEXT);";
 
 

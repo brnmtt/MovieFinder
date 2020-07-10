@@ -11,7 +11,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.pw.activity.MainActivity;
 import com.example.pw.database.FilmProvider;
 import com.example.pw.database.FilmTableHelper;
 
@@ -21,8 +20,11 @@ import org.json.JSONObject;
 
 public class Utilities {
     public static int pages=1;
-    public static  final String url ="https://api.themoviedb.org/3/movie/popular?api_key=44a49a187a15a8457aeb3e8b876092f8&language=it-IT&region=IT&page=";
+    public static final String url ="https://api.themoviedb.org/3/movie/popular?api_key=44a49a187a15a8457aeb3e8b876092f8&language=it-IT&region=IT&page=";
     public static final String imagePrefix = "https://image.tmdb.org/t/p/w500";
+    public static int see = 0; // 0 = visualizzazione normale, 1 = solo film visti, 2 = solo film non visti
+
+
 
     public static void getData(final Context context){
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -51,6 +53,7 @@ public class Utilities {
                                     cv.put(FilmTableHelper.BACKDROPPATH, data.getString("backdrop_path"));
                                     cv.put(FilmTableHelper.API_ID, id);
                                     cv.put(FilmTableHelper.TO_SEE, "false");
+                                    cv.put(FilmTableHelper.SEEN, "false");
 
                                     context.getContentResolver().insert(FilmProvider.FILMS,cv);
                                 }
