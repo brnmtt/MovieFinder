@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.pw.Film;
 import com.example.pw.R;
 import com.example.pw.Utilities;
@@ -38,16 +39,10 @@ public class FilmDescriptionActivity extends AppCompatActivity {
 
         titolo.setText(cursor.getString(cursor.getColumnIndex(FilmTableHelper.TITLE)));
 
-        if(!cursor.getString(cursor.getColumnIndex(FilmTableHelper.BACKDROPPATH)).equals("null")){
-            String url = Utilities.imagePrefix+cursor.getString(cursor.getColumnIndex(FilmTableHelper.BACKDROPPATH));
-            Glide.with(this)
-                    .load(url)
-                    .into(banner);
-        }else{
-            Glide.with(this)
-                    .load(R.drawable.image_missing)
-                    .into(banner);
-        }
+
+        String url = Utilities.imagePrefix+cursor.getString(cursor.getColumnIndex(FilmTableHelper.BACKDROPPATH));
+        Glide.with(this).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.image_missing).error(R.drawable.image_missing)).load(url).into(banner);
+
         if(!cursor.getString(cursor.getColumnIndex(FilmTableHelper.DESCRIPTION)).equals("")){
             descrizione.setText(cursor.getString(cursor.getColumnIndex(FilmTableHelper.DESCRIPTION)));
         }else{

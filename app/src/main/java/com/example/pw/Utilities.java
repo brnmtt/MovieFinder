@@ -39,13 +39,15 @@ public class Utilities {
 
                             JSONObject obj = new JSONObject(response);
                             JSONArray result = obj.getJSONArray("results");
-
+                            Log.d("ciao", obj.getString("page"));
+                            int filmCounter = 0;
                             for(int i = 0 ; i < result.length() ; i++){
 
                                 JSONObject data = result.getJSONObject(i);
                                 String id = data.getString("id");
                                 Cursor cursor = context.getContentResolver().query(FilmProvider.FILMS,null , FilmTableHelper.API_ID + " = " + id ,null,null );
                                 if(cursor.getCount()<=0){
+                                    filmCounter++;
                                     ContentValues cv = new ContentValues();
                                     cv.put(FilmTableHelper.TITLE, data.getString("title"));
                                     cv.put(FilmTableHelper.DESCRIPTION, data.getString("overview"));
@@ -59,7 +61,10 @@ public class Utilities {
                                 }
 
                             }
-
+                            if(filmCounter < 10){
+                                pages++;
+                                getData(context);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

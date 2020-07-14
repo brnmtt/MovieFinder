@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.example.pw.Utilities;
 import com.example.pw.activity.FilmDescriptionActivity;
 import com.example.pw.R;
@@ -94,16 +95,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }
         });
 
-        if(!film.getString(film.getColumnIndex(FilmTableHelper.IMAGEPATH)).equals("null")){
-            String url = Utilities.imagePrefix+film.getString(film.getColumnIndex(FilmTableHelper.IMAGEPATH));
-            Glide.with(context)
-                    .load(url)
-                    .into(holder.image);
-        }else{
-            Glide.with(context)
-                    .load(R.drawable.image_missing)
-                    .into(holder.image);
-        }
+        String url = Utilities.imagePrefix+film.getString(film.getColumnIndex(FilmTableHelper.IMAGEPATH));
+
+        Glide.with(context).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.image_missing).error(R.drawable.image_missing)).
+                load(url).into(holder.image);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

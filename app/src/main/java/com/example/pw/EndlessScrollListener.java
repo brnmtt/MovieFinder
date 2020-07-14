@@ -39,7 +39,6 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
     public int getLastVisibleItem(int[] lastVisibleItemPositions) {
         int maxSize = 0;
         for (int i = 0; i < lastVisibleItemPositions.length; i++) {
-            Log.d("ciao", "getLastVisibleItem: " + lastVisibleItemPositions[i]);
             if (i == 0) {
                 maxSize = lastVisibleItemPositions[i];
             }
@@ -89,7 +88,7 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
         // the visibleThreshold and need to reload more data.
         // If we do need to reload some more data, we execute onLoadMore to fetch the data.
             // threshold should reflect how many total columns there are too
-            if (!loading && (lastVisibleItemPosition + visibleThreshold) > totalItemCount) {
+            if (!loading && (lastVisibleItemPosition + visibleThreshold) > totalItemCount && Utilities.see == 0) {
                 Utilities.pages ++;
                 onLoadMore(Utilities.pages, totalItemCount, view);
                 loading = true;

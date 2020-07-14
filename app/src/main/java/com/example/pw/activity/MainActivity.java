@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import com.example.pw.R;
 import com.example.pw.Utilities;
 
+import com.example.pw.database.FilmTableHelper;
 import com.example.pw.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         Utilities.getData(this);
         fragment = new HomeFragment();
+
 
         seen = findViewById(R.id.seenFilter);
         unseen = findViewById(R.id.unseenFilter);
